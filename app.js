@@ -1,8 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import{
-  getAllUsers
+  getAllUsers, getUserWithId, insertNewUser, updateUser, deleteUser
 } from './controllers/userController.js'
+import{
+  checkUserPost, checkUserId, checkUserPut, checkUserDelete
+} from './middlewares/middleWares.js'
 
 const app = express();
 const PORT = process.env.PORT || 8200
@@ -11,6 +14,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.get('/users', getAllUsers);
+app.get('/users/:id', checkUserId, getUserWithId);
+app.post('/users', checkUserPost, insertNewUser);
+app.put('/users/:id', checkUserPut, updateUser);
+app.delete('/users/:id', checkUserDelete, deleteUser);
 
 
 app.get('*', (req,res) => {
